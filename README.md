@@ -7,4 +7,5 @@
 полнения». Например:
 5 ls
 1 ./test 3 ps***
+![image](https://github.com/user-attachments/assets/f38d0ca3-512c-4479-913b-87fee7a4c1ba)
 
