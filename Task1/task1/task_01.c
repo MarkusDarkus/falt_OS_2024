@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     char command[MAX_COMMAND_LENGTH];
 
     while (fgets(line, sizeof(line), file)) {
-        if (sscanf(line, "%d %s", &delay, command) != 2) {
+        if (sscanf(line, "%d %[^\n]", &delay, command) != 2) {
             fprintf(stderr, "Ошибка формата строки: %s\n", line);
             continue;
         }
@@ -34,16 +34,24 @@ int main(int argc, char *argv[]) {
         if (pid == 0) {
             // Дочерний процесс
             sleep(delay);
-            execlp(command, command, NULL);
+            char *args[MAX_COMMAND_LENGTH];
+            args[0] = strtok(command, " ");
+            int i = 1;
+            char *arg;
+
+            // Разделяем команду на аргументы
+            while ((arg = strtok(NULL, " ")) != NULL) {
+                args[i++] = arg;
+            }
+            args[i] = NULL;
+
+            execvp(args[0], args); 
             perror("Ошибка выполнения команды");
             exit(1);
         }
     }
 
     fclose(file);
-
-    // Ожидание завершения всех дочерних процессов
     while (wait(NULL) > 0);
-
     return 0;
 }

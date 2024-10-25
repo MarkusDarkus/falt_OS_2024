@@ -2,3 +2,4 @@
    1 ./test
    3 ls
    4 ./test
+   6 echo "Hello"
